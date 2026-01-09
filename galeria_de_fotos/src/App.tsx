@@ -10,44 +10,23 @@ import Footer from "./components/footer";
 function App() {
 
    const [search, setSearch] = useState("");
-  const [photos, setPhotos] = useState<Photo[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
+   const [photos, setPhotos] = useState<Photo[]>([]);
 
   useEffect(() => {
-    setLoading(true);
-    fetchPhotos()
-      .then(setPhotos)
-      .finally(() => setLoading(false));
+    fetchPhotos().then(setPhotos);
   }, []);
 
-  // 🔹 Buscar quando digitar
   useEffect(() => {
-    if (!search.trim()) {
-      setHasSearched(false);
-      return;
-    }
+    if (search.trim() === "") return;
 
-    setHasSearched(true);
-    setLoading(true);
-
-    fetchPhotos(search)
-      .then(setPhotos)
-      .finally(() => setLoading(false));
+    fetchPhotos(search).then(setPhotos);
   }, [search]);
 
   return (
     <div className="min-h-screen bg-slate-900">
       <Header />
       <SearchInput search={search} setSearch={setSearch} />
-
-      {loading && (
-        <p className="text-center text-white mt-10">Carregando...</p>
-      )}
-
-      {!loading && (
-        <GaleriaDeFotos photos={photos} />
-      )}
+      <GaleriaDeFotos photos={photos} />
       <Footer />
     </div>
   )
