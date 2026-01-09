@@ -1,0 +1,1 @@
+# Aplica-o-de-Galeria-de-Fotos
