@@ -1,35 +1,52 @@
-import { useState } from "react";
-import GaleriaDeFotos from "./components/galeriaDeFotos";
+import { useEffect, useState } from "react";
+import GaleriaDeFotos, { type Photo } from "./components/galeriaDeFotos";
 import Header from "./components/header"
 import SearchInput from "./components/searchInput"
+import fetchPhotos from "./api/fetchPhotos";
 
-const photos = [
-  { id: 1, title: "Montanha", url: "https://picsum.photos/id/1018/400/300" },
-  { id: 2, title: "Praia", url: "https://picsum.photos/id/1015/400/300" },
-  { id: 3, title: "Floresta", url: "https://picsum.photos/id/1011/400/300" },
-  { id: 4, title: "Cidade", url: "https://picsum.photos/id/1012/400/300" },
-  { id: 5, title: "Deserto", url: "https://picsum.photos/id/1002/400/300" },
-  { id: 6, title: "Neve", url: "https://picsum.photos/id/1003/400/300" },
-  { id: 7, title: "Lago", url: "https://picsum.photos/id/1005/400/300" },
-  { id: 8, title: "Ponte", url: "https://picsum.photos/id/1006/400/300" },
-  { id: 9, title: "Cachoeira", url: "https://picsum.photos/id/1016/400/300" },
-  { id: 10, title: "Campos", url: "https://picsum.photos/id/1020/400/300" }
-];
 
 
 function App() {
 
-  const [search, setSearch] = useState("");
+   const [search, setSearch] = useState("");
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
-  const filteredPhotos = photos.filter(photo =>
-    photo.title.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    setLoading(true);
+    fetchPhotos()
+      .then(setPhotos)
+      .finally(() => setLoading(false));
+  }, []);
+
+  // 🔹 Buscar quando digitar
+  useEffect(() => {
+    if (!search.trim()) {
+      setHasSearched(false);
+      return;
+    }
+
+    setHasSearched(true);
+    setLoading(true);
+
+    fetchPhotos(search)
+      .then(setPhotos)
+      .finally(() => setLoading(false));
+  }, [search]);
 
   return (
-    <div className=" min-h-screen bg-slate-900 ">
+    <div className="min-h-screen bg-slate-900">
       <Header />
-      <SearchInput search={search} setSearch={setSearch}/>
-      <GaleriaDeFotos photos={filteredPhotos}/>
+      <SearchInput search={search} setSearch={setSearch} />
+
+      {loading && (
+        <p className="text-center text-white mt-10">Carregando...</p>
+      )}
+
+      {!loading && (
+        <GaleriaDeFotos photos={photos} />
+      )}
     </div>
   )
 }
