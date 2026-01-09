@@ -4,6 +4,14 @@ Aplicação web desenvolvida em **React + TypeScript** que exibe uma galeria de 
 
 ---
 
+## 🌐 Deploy
+
+A aplicação está disponível online no link abaixo:
+
+👉 [https://aplicacao-de-galeria-de-fotos.vercel.app](https://aplicacao-de-galeria-de-fotos.vercel.app)
+
+---
+
 ## 🧩 Funcionalidades
 
 * Exibição inicial de **10 fotos** ao carregar a página
