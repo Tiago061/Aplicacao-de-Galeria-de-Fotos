@@ -3,6 +3,7 @@ import GaleriaDeFotos, { type Photo } from "./components/galeriaDeFotos";
 import Header from "./components/header"
 import SearchInput from "./components/searchInput"
 import fetchPhotos from "./api/fetchPhotos";
+import Footer from "./components/footer";
 
 
 
@@ -47,6 +48,7 @@ function App() {
       {!loading && (
         <GaleriaDeFotos photos={photos} />
       )}
+      <Footer />
     </div>
   )
 }
